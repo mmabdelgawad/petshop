@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export USER=$USER
+export USER_ID=$UID
+export USER_GROUP=$(id -g)
+
+type=$1
+
+if [[ $type == 'up' ]]; then
+	docker-compose up -d
+else
+    docker-compose down
+fi
+

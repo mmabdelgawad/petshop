@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+composer install --optimize-autoloader
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+
+php-fpm
