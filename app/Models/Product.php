@@ -9,4 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
+
+    // Relations
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_uuid');
+    }
 }
