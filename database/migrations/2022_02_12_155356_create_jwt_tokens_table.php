@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,14 @@ class CreateJwtTokensTable extends Migration
     {
         Schema::create('jwt_tokens', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class);
+            $table->string('unique_id');
+            $table->string('token_title');
+            $table->boolean('restrictions')->nullable();
+            $table->string('permissions')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamp('last_used_at')->nullable();
+            $table->timestamp('refreshed_at')->nullable();
             $table->timestamps();
         });
     }
