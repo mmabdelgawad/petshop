@@ -5,11 +5,12 @@ namespace App\Services;
 use App\Exceptions\User\UserException;
 use App\Repositories\JwtTokenRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserService
 {
     public function __construct(
+        private JwtService $jwtService,
         private UserRepository $userRepository,
         private JwtTokenRepository $jwtTokenRepository
     )
@@ -21,22 +22,13 @@ class UserService
         $user = $this->userRepository->findByEmailAndPassword($email, $password);
 
         if (is_null($user)) {
-            throw UserException::notFound("User not found", 404);
+            throw UserException::notFound("User not found", Response::HTTP_BAD_REQUEST);
         }
 
-        $config = Config::get('jwtConfig');
-        $now = now()->toImmutable();
-        $token = $config->builder()
-            ->issuedBy(config('app.url'))
-            ->permittedFor(config('app.url'))
-            ->issuedAt($now)
-            ->expiresAt($now->modify('+5 hour'))
-            ->withClaim('uuid', $user->uuid)
-            ->getToken($config->signer(), $config->signingKey());
-
+        $token = $this->jwtService->login($user);
         $this->userRepository->updateLastLoginAt($user);
         $this->jwtTokenRepository->create($user);
 
-        return $token->toString();
+        return $token;
     }
 }
