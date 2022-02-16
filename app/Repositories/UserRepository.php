@@ -28,4 +28,9 @@ class UserRepository
             'last_login_at' => now()
         ]);
     }
+
+    public function getUserByUuid(string $uuid)
+    {
+        return $this->userModel->where('uuid', $uuid)->first();
+    }
 }
