@@ -14,7 +14,9 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'uuid' => $this->faker->uuid(),
+            'title' => $this->faker->name,
+            'slug' => $this->faker->unique()->slug(1),
         ];
     }
 }
