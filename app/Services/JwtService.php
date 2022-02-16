@@ -6,18 +6,29 @@ use Illuminate\Support\Facades\Config;
 
 class JwtService
 {
+    private mixed $config;
+
+    public function __construct()
+    {
+        $this->config = Config::get('jwtConfig');
+    }
+
     public function login($user)
     {
-        $config = Config::get('jwtConfig');
         $now = now()->toImmutable();
-        $token = $config->builder()
+        $token = $this->config->builder()
             ->issuedBy(config('app.url'))
             ->permittedFor(config('app.url'))
             ->issuedAt($now)
             ->expiresAt($now->modify('+5 hour'))
             ->withClaim('uuid', $user->uuid)
-            ->getToken($config->signer(), $config->signingKey());
+            ->getToken($this->config->signer(), $this->config->signingKey());
 
         return $token->toString();
+    }
+
+    public function parseToken($token)
+    {
+        return $this->config->parser()->parse($token)->claims()->all();
     }
 }
