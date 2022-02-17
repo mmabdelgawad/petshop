@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\BearerToken;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpFoundation\Response;
 
 class JwtService
 {
@@ -30,5 +32,12 @@ class JwtService
     public function parseToken($token)
     {
         return $this->config->parser()->parse($token)->claims()->all();
+    }
+
+    public function checkIfTokenExpired($exp)
+    {
+        if ($exp < now()) {
+            throw BearerToken::expired("Token has expired, please login again to issue a new token", Response::HTTP_BAD_REQUEST);
+        }
     }
 }

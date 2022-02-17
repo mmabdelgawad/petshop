@@ -17,6 +17,11 @@ final class BearerToken extends Exception
         return new self($message, $code);
     }
 
+    public static function expired(string $message, int $code)
+    {
+        return new self($message, $code);
+    }
+
     public function render(): JsonResponse
     {
         return response()->json(['message' => $this->message], $this->code);

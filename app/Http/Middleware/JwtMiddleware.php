@@ -26,6 +26,8 @@ class JwtMiddleware
      * @param Request $request
      * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|RedirectResponse
+     * @throws BearerToken
+     * @throws UserException
      */
     public function handle(Request $request, Closure $next)
     {
@@ -36,6 +38,7 @@ class JwtMiddleware
         }
 
         $tokenData = $this->jwtService->parseToken($token);
+        $this->jwtService->checkIfTokenExpired($tokenData['exp']);
         $uuid = $tokenData['uuid'];
 
         $user = $this->userRepository->getUserByUuid($uuid);
