@@ -29,6 +29,6 @@ class UserService
         $this->userRepository->updateLastLoginAt($user);
         $this->jwtTokenRepository->create($user);
 
-        return $token;
+        return [$user, $token];
     }
 }

@@ -17,7 +17,7 @@ class ProductListingTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $token = $this->userService->login("petshop@buckhill.com", "password");
+        [, $token] = $this->userService->login("petshop@buckhill.com", "password");
 
         $response = $this->json('GET', self::API_PREFIX . '/products', [], [
             'Authorization' => "Bearer {$token}"
