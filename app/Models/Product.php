@@ -11,18 +11,22 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $casts = [
-        'metadata' => 'array'
-    ];
-
     // Relations
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_uuid', 'uuid');
     }
 
+    public function getBrandAttribute()
+    {
+        $brandUuid = json_decode($this->metadata, true);
+        return Brand::query()->where('uuid', $brandUuid)->first();
+    }
+
     // Scopes
     public function scopeSearch($query, Request $request) {
+        $query->with('category');
+
         if ($request->filled('category')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->get('category'));
@@ -51,6 +55,8 @@ class Product extends Model
         } else {
             $result = $query->paginate(10);
         }
+
+        $result->append('brand');
 
         return $result;
     }
