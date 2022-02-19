@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * @OA\Schema()
+ */
 class UserLogin extends FormRequest
 {
     /**
@@ -20,6 +22,10 @@ class UserLogin extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     */
+    /**
+     * @OA\Property(format="string", default="petshop@buckhill.com", description="email", property="email"),
+     * @OA\Property(format="string", default="password", description="password", property="password"),
      */
     public function rules()
     {
