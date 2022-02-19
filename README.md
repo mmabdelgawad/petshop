@@ -1,6 +1,5 @@
 # Petshop
 
----
 ## # Installation Steps
 
 - Clone the project
