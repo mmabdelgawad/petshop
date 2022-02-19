@@ -17,3 +17,8 @@ sudo sh -c "echo 127.0.0.1       petshop.local >> /etc/hosts"
 bash ./petshop down
 ```
 - To access phpmyadmin use `http://petshop.local:8082`
+
+## # Applied Features
+
+- User login
+- Product listing
