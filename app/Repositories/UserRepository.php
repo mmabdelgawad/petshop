@@ -24,9 +24,9 @@ class UserRepository
 
     public function updateLastLoginAt(User $user)
     {
-        $user->update([
+        $user->forceFill([
             'last_login_at' => now()
-        ]);
+        ])->save();
     }
 
     public function getUserByUuid(string $uuid)
