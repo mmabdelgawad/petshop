@@ -18,4 +18,4 @@ Route::prefix('user')->namespace('Auth')->group(function () {
     Route::post('login', 'LoginController');
 });
 
-Route::apiResource('products', 'ProductController')->middleware('jwt');
+Route::apiResource('products', 'ProductController')->only('index')->middleware('jwt');
